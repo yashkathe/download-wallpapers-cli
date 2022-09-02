@@ -1,8 +1,7 @@
 const express = require("express");
+const fs = require("fs").promises;
 const puppeteer = require("puppeteer");
 const readLine = require("readline");
-
-const config = require('./functions/settings');
 
 const app = express();
 
@@ -18,10 +17,6 @@ const askQuestion = (query) => {
     }));
 };
 
-config.createSettingsJson();
-config.setSettings0();
-config.setSettings1();
-
 const startScraping = async () => {
 
     //initialise puppeteer
@@ -35,18 +30,32 @@ const startScraping = async () => {
     //start the search
     await page.goto(`https://www.wallpaperflare.com/search?wallpaper=${wallpaperInput}`);
 
-    await page.waitForSelector('#search_input');
+    // await page.waitForSelector('#search_input');
 
-    await page.type('#search_input', wallpaperInput);
-    await page.type('#swidth', "1920");
-    await page.type('#sheight', "1080");
+    // await page.type('#search_input', wallpaperInput);
+    // await page.type('#swidth', "1920");
+    // await page.type('#sheight', "1080");
 
-    await Promise.all([
-        page.click("#search_sub"),
-        page.waitForNavigation()
-    ]);
+    // await Promise.all([
+    //     page.click("#search_sub"),
+    //     page.waitForNavigation()
+    // ]);
 
-    console.log(page.url());
+    pageUrl = page.url();
+    console.log(pageUrl);
+
+    // sleep.sleep(2)
+
+    console.log('downloading..., this will take some time');
+    console.log("reached");
+    const photos = await page.$$eval("#gallery > li > figure > a > img", imgs => {
+        return imgs.map(x => x.getAttribute("data-src"));
+    });
+
+    for(const photo of photos) {
+        const imagePage = await page.goto(photo);
+        await fs.writeFile(photo.split("/").pop(), await imagePage.buffer());
+    }
 
     await browser.close();
 };
