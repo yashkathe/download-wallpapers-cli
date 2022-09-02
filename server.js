@@ -3,6 +3,8 @@ const fs = require("fs").promises;
 const puppeteer = require("puppeteer");
 const readLine = require("readline");
 
+const config = require('./settings');
+
 const app = express();
 
 const askQuestion = (query) => {
@@ -16,6 +18,9 @@ const askQuestion = (query) => {
         resolve(ans);
     }));
 };
+
+config.setSettings0();
+config.setSettings1();
 
 const startScraping = async () => {
 
