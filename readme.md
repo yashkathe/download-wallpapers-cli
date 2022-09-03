@@ -12,13 +12,12 @@ _This script is only tested in linux_
 git clone https://github.com/yashkathe/download-wallpapers-cli.git
 ```
 
-2. Add nodemon.json to the project directory and add the following content. Set the port to what you want.
+2. [optional] Add nodemon.json to the project directory and add the following content. Set the port to what you want.
 ```json
 {
     "env" : {
         "PORT": "8080"
-    },
-    "ignore":"settings.json"
+    }
 }
 ```
 
@@ -31,11 +30,5 @@ npm install
 npm start
 ```
 
-4. Tweak some settings (not yet added)  
-To set settings manually change selfEdit to true
-```json
-{
-  "selfEdit": true,
-  "wallpaperPath": "/home/user/download-wallpapers-cli/wallpapers/downloads"
-}
-```
+##
+The images will be stored in **_./downloads_**
